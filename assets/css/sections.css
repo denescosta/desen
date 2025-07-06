@@ -1,0 +1,21 @@
+/* Hero Section */
+#hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* About Section */
+#about {
+  padding: 4rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Services Section */
+#services {
+  background: white;
+  padding: 4rem 2rem;
+}
