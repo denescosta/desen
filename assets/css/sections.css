@@ -2,14 +2,13 @@
 
 /* Hero Section */
 .hero {
-  min-height: 80vh;
+  height: 600px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   text-align: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
-  padding: 4rem 2rem;
+  padding: 20px 50px;
 }
 
 .hero-content h1 {
@@ -29,26 +28,84 @@
   animation: fadeInUp 1s ease 0.6s both;
 }
 
-/* About Section */
+.hero-content img {
+  height: 300px;
+}
+
+/* About (Quem Somos) Section */
 .about {
-  padding: 4rem 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-  text-align: center;
+  padding: 60px 0 40px 0;
+  background: #fff;
 }
 
-.about h2 {
-  font-size: 2.5rem;
-  color: #333;
-  margin-bottom: 2rem;
+.about-flex {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 36px;
+  align-items: center;
+  justify-content: center;
 }
 
-.about p {
+.about-image img {
+  width: 340px;
+  max-width: 100%;
+  border-radius: 14px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.09);
+  object-fit: cover;
+  background: #e3e6ee;
+}
+
+.about-content {
+  flex: 1 1 340px;
+  min-width: 280px;
+}
+
+.about-content h2 {
+  font-size: 2.1rem;
+  color: #1a237e;
+  margin-bottom: 18px;
+}
+
+.about-content p {
+  color: #444;
+  font-size: 1.13rem;
+  margin-bottom: 18px;
+  line-height: 1.7;
+}
+
+.about-highlights {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.about-highlights li {
+  font-size: 1.05rem;
+  color: #1976d2;
+  margin-bottom: 10px;
+  padding-left: 22px;
+  position: relative;
+}
+
+.about-highlights li::before {
+  content: '\2713';
+  color: #43a047;
   font-size: 1.1rem;
-  line-height: 1.8;
-  color: #666;
-  max-width: 800px;
-  margin: 0 auto 2rem;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+@media (max-width: 900px) {
+  .about-flex {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .about-image img {
+    width: 100%;
+    max-width: 420px;
+  }
 }
 
 .skills {
@@ -160,6 +217,440 @@
 .form-group textarea {
   resize: vertical;
   min-height: 120px;
+}
+
+/* Tours Section */
+.tours {
+  padding: 60px 0 40px 0;
+  background: #fff;
+}
+
+.tours .container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.tours h2 {
+  text-align: center;
+  font-size: 2.4rem;
+  color: #1a237e;
+  margin-bottom: 36px;
+  letter-spacing: 1px;
+}
+
+.tours-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  gap: 32px;
+}
+
+.tour-card {
+  background: #f8f9fa;
+  border-radius: 14px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.07);
+  padding: 28px 22px 22px 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  transition: transform 0.18s, box-shadow 0.18s;
+  border: 1px solid #e3e6ee;
+}
+
+.tour-card:hover {
+  transform: translateY(-6px) scale(1.03);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.13);
+}
+
+.tour-card h3 {
+  font-size: 1.25rem;
+  color: #1a237e;
+  margin-bottom: 10px;
+}
+
+.tour-card p {
+  color: #444;
+  font-size: 1.08rem;
+  margin-bottom: 12px;
+}
+
+.tour-card strong {
+  color: #1976d2;
+}
+
+.tour-btn {
+  margin-top: auto;
+  background: #1976d2;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 22px;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.18s, box-shadow 0.18s;
+  box-shadow: 0 2px 8px rgba(25, 118, 210, 0.08);
+  cursor: pointer;
+  display: inline-block;
+}
+
+.tour-btn:hover {
+  background: #0d47a1;
+  box-shadow: 0 4px 16px rgba(25, 118, 210, 0.16);
+}
+
+/* Testimonials Section */
+.testimonials {
+  padding: 60px 0 40px 0;
+  background: #f6f8fc;
+}
+
+.testimonials .container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.testimonials h2 {
+  text-align: center;
+  font-size: 2.2rem;
+  color: #1a237e;
+  margin-bottom: 36px;
+  letter-spacing: 1px;
+}
+
+.testimonials-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 28px;
+}
+
+.testimonial-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+  padding: 26px 20px 18px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border: 1px solid #e3e6ee;
+  transition: box-shadow 0.18s, transform 0.18s;
+}
+
+.testimonial-card:hover {
+  box-shadow: 0 6px 24px rgba(25, 118, 210, 0.13);
+  transform: translateY(-4px) scale(1.02);
+}
+
+.testimonial-text {
+  font-size: 1.08rem;
+  color: #333;
+  margin-bottom: 18px;
+  font-style: italic;
+  line-height: 1.6;
+}
+
+.testimonial-info {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  font-size: 0.98rem;
+  color: #1976d2;
+  font-weight: 600;
+}
+
+.testimonial-author {
+  font-weight: 700;
+  color: #1a237e;
+}
+
+.testimonial-date {
+  font-weight: 400;
+  color: #888;
+  font-size: 0.93rem;
+}
+
+/* Conheça Natal Section */
+.conheca {
+  padding: 60px 0 40px 0;
+  background: #f6f8fc;
+}
+
+.conheca .container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.conheca h2 {
+  text-align: center;
+  font-size: 2.2rem;
+  color: #1a237e;
+  margin-bottom: 28px;
+  letter-spacing: 1px;
+}
+
+.conheca-intro {
+  text-align: center;
+  color: #444;
+  font-size: 1.13rem;
+  margin-bottom: 32px;
+}
+
+.conheca-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 28px;
+}
+
+.conheca-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+  padding: 24px 18px 18px 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border: 1px solid #e3e6ee;
+  transition: box-shadow 0.18s, transform 0.18s;
+}
+
+.conheca-card:hover {
+  box-shadow: 0 6px 24px rgba(25, 118, 210, 0.13);
+  transform: translateY(-4px) scale(1.02);
+}
+
+.conheca-card h3 {
+  font-size: 1.18rem;
+  color: #1976d2;
+  margin-bottom: 8px;
+}
+
+.conheca-card p {
+  color: #444;
+  font-size: 1.04rem;
+  margin-bottom: 0;
+  line-height: 1.6;
+}
+
+/* Contato Page */
+.contato-page {
+  padding: 60px 0 40px 0;
+  background: #fff;
+}
+
+.contato-flex {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  align-items: flex-start;
+  justify-content: center;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.contato-form-area {
+  flex: 1 1 340px;
+  min-width: 300px;
+  background: #f8f9fa;
+  border-radius: 14px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.07);
+  padding: 32px 24px 24px 24px;
+}
+
+.contato-form-area h2 {
+  font-size: 2rem;
+  color: #1a237e;
+  margin-bottom: 18px;
+}
+
+.contato-form label {
+  font-weight: 600;
+  color: #1976d2;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.contato-form input,
+.contato-form textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  margin-bottom: 14px;
+  background: #fff;
+}
+
+.contato-form button {
+  background: #1976d2;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 12px 0;
+  font-size: 1.08rem;
+  font-weight: 600;
+  width: 100%;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+
+.contato-form button:hover {
+  background: #0d47a1;
+}
+
+.contato-info-area {
+  flex: 1 1 260px;
+  min-width: 240px;
+  background: #f6f8fc;
+  border-radius: 14px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+  padding: 28px 20px 20px 20px;
+}
+
+.contato-info-area h3 {
+  color: #1976d2;
+  font-size: 1.08rem;
+  margin-top: 18px;
+  margin-bottom: 6px;
+}
+
+.contato-info-area p {
+  color: #444;
+  font-size: 1.02rem;
+  margin-bottom: 10px;
+  line-height: 1.6;
+}
+
+@media (max-width: 900px) {
+  .contato-flex {
+    flex-direction: column;
+    gap: 24px;
+  }
+}
+
+/* Conheça Natal - Layout com Sidebar */
+.sidebar-area {
+  position: sticky;
+  top: 0;
+}
+
+.conheca-layout {
+  display: flex;
+  align-items: flex-start;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+  gap: 36px;
+  position: relative;
+}
+
+.sidebar-title-fixed {
+  min-width: 200px;
+  margin-right: 0;
+  margin-left: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  position: static;
+  background: #f6f8fc;
+  border-radius: 12px 12px 0 0;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  padding: 10px 10px 0 10px;
+}
+
+.conheca-sidebar {
+  position: sticky;
+  top: 0;
+  min-width: 200px;
+  background: #f6f8fc;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  padding: 18px 10px;
+  height: fit-content;
+  max-height: 80vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.conheca-sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.conheca-sidebar li {
+  margin-bottom: 7px;
+}
+
+.conheca-sidebar a {
+  color: #1976d2;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 1.01rem;
+  transition: color 0.15s;
+  display: block;
+  padding: 5px 0 5px 8px;
+  border-radius: 6px;
+}
+
+.conheca-sidebar a:hover {
+  color: #0d47a1;
+  background: #e3e6ee;
+  text-decoration: underline;
+}
+
+.sidebar-title {
+  font-size: 1.13rem;
+  color: #1a237e;
+  font-weight: 700;
+  margin-bottom: 10px;
+  padding-left: 4px;
+  letter-spacing: 0.5px;
+  position: sticky;
+  top: 0;
+  background: #f6f8fc;
+  z-index: 2;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.conheca-cards-vertical {
+  flex: 1 1 0%;
+  max-width: 800px;
+  margin-left: 0;
+}
+
+@media (max-width: 900px) {
+  .conheca-layout {
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .sidebar-title-fixed {
+    position: static;
+    min-width: 0;
+    max-width: 100%;
+    padding: 6px 4px 0 4px;
+    border-radius: 12px 12px 0 0;
+    box-shadow: none;
+    background: transparent;
+  }
+
+  .conheca-sidebar {
+    position: static;
+    min-width: 0;
+    max-width: 100%;
+    z-index: auto;
+    left: 0;
+  }
+
+  .conheca-cards-vertical {
+    margin-left: 0;
+    max-width: 100%;
+  }
 }
 
 /* Animations */

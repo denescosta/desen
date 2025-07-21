@@ -105,15 +105,15 @@ function initPageSpecificFeatures() {
 function initHomePage() {
   console.log('🏠 Inicializando página inicial...');
 
-  // Adicionar listeners para botões CTA
-  const ctaButtons = document.querySelectorAll('.btn');
-  ctaButtons.forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      if (btn.getAttribute('href') && btn.getAttribute('href').startsWith('#')) {
+  // Adicionar listeners para botões CTA e navegação âncora
+  const anchorButtons = document.querySelectorAll('.btn, .cta-button, .tour-btn, .secondary-button, .hero-btn, nav a');
+  anchorButtons.forEach(btn => {
+    if (btn.getAttribute('href') && btn.getAttribute('href').startsWith('#')) {
+      btn.addEventListener('click', (e) => {
         e.preventDefault();
         smoothScroll(btn.getAttribute('href'));
-      }
-    });
+      });
+    }
   });
 }
 
@@ -201,6 +201,13 @@ document.addEventListener('DOMContentLoaded', () => {
     addVisualEffects();
     toggleMobileMenu();
     initPageSpecificFeatures();
+
+    // Scroll suave para hash na URL após carregamento
+    if (window.location.hash) {
+      setTimeout(() => {
+        smoothScroll(window.location.hash);
+      }, 200);
+    }
 
     console.log('✅ Scripts principais inicializados!');
   }, 200);

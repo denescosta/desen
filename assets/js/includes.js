@@ -38,7 +38,15 @@ const COMPONENTS = {
 const PAGE_CONFIGS = {
   'index.html': [
     { id: 'hero', path: '../sections/hero.html' },
-    { id: 'about', path: '../sections/about.html' }
+    { id: 'about', path: '../sections/about.html' },
+    { id: 'tours', path: '../sections/tours.html' },
+    { id: 'testimonials', path: '../sections/testimonials.html' },
+    { id: 'faq', path: '../sections/faq.html' },
+    { id: 'blog', path: '../sections/blog.html' },
+    { id: 'contact', path: '../sections/contact.html' }
+  ],
+  'conheca.html': [
+    { id: 'conheca-page', path: '../sections/conheca.html' }
   ],
   'sobre.html': [
     { id: 'about-detailed', path: '../sections/about.html' }

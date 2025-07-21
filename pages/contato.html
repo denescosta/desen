@@ -3,20 +3,47 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Contato</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contato | RN Private Tour</title>
   <link href="../assets/css/style.css" rel="stylesheet">
   <link href="../assets/css/components.css" rel="stylesheet">
   <link href="../assets/css/sections.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
 </head>
 
 <body>
   <div id="header"></div>
-
-  <div>
-    <h2>Contato</h2>
-    <p>Entre em contato comigo através do formulário abaixo ou pelas redes sociais.</p>
-  </div>
-
+  <main>
+    <section class="contato-page" id="contato-page">
+      <div class="container contato-flex">
+        <div class="contato-form-area">
+          <h2>Contato</h2>
+          <form class="contato-form">
+            <label for="nome">Nome</label>
+            <input type="text" id="nome" name="nome" placeholder="Seu nome" required>
+            <label for="email">E-mail</label>
+            <input type="email" id="email" name="email" placeholder="Seu e-mail" required>
+            <label for="telefone">Telefone</label>
+            <input type="tel" id="telefone" name="telefone" placeholder="(xx) xxxxx-xxxx">
+            <label for="mensagem">Mensagem</label>
+            <textarea id="mensagem" name="mensagem" rows="5" placeholder="Digite sua mensagem" required></textarea>
+            <button type="submit">Enviar</button>
+          </form>
+        </div>
+        <div class="contato-info-area">
+          <h3>Endereço</h3>
+          <p>Rua Poços de Caldas, 3880<br>Nova Parnamirim – Natal/RN<br>CEP: 59151-200​</p>
+          <h3>Reservas</h3>
+          <p>(todos os dias das 07h às 21h30)<br><strong>(84) 99907-6816</strong>
+          <h3>E-mail</h3>
+          <p><a href="mailto:denes_11@hotmail.com">denes_11@hotmail.com</a></p>
+        </div>
+      </div>
+    </section>
+  </main>
+  <div id="footer"></div>
   <script src="../assets/js/includes.js"></script>
   <script src="../assets/js/main.js"></script>
 </body>
