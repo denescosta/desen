@@ -9,7 +9,7 @@
 
 .hero {
   height: auto;
-  width: 120%;
+  width: 100vw;
   display: flex;
   align-items: flex-start;
   justify-content: center;
