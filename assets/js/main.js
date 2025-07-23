@@ -84,6 +84,32 @@ function toggleMobileMenu() {
   }
 }
 
+// Função para controlar o menu lateral (sidebar)
+function toggleSidebar() {
+  const sidebar = document.querySelector('header .sidebar');
+  const sidebarButton = document.getElementById('botao-sidebar');
+  if (sidebar && sidebarButton) {
+    sidebarButton.addEventListener('click', (e) => {
+      sidebar.classList.toggle('aberta');
+      document.body.classList.toggle('sidebar-aberta', sidebar.classList.contains('aberta'));
+      document.getElementById('header').classList.toggle('sidebar-aberta', sidebar.classList.contains('aberta'));
+      e.stopPropagation();
+    });
+    // Fecha a sidebar ao clicar fora
+    document.addEventListener('click', (e) => {
+      if (
+        sidebar.classList.contains('aberta') &&
+        !sidebar.contains(e.target) &&
+        e.target !== sidebarButton
+      ) {
+        sidebar.classList.remove('aberta');
+        document.body.classList.remove('sidebar-aberta');
+        document.getElementById('header').classList.remove('sidebar-aberta');
+      }
+    });
+  }
+}
+
 // Função para adicionar funcionalidades específicas da página
 function initPageSpecificFeatures() {
   const currentPage = window.location.pathname.split('/').pop() || 'index.html';
@@ -200,6 +226,7 @@ document.addEventListener('DOMContentLoaded', () => {
     animateOnScroll();
     addVisualEffects();
     toggleMobileMenu();
+    toggleSidebar(); // <-- Adiciona inicialização do sidebar
     initPageSpecificFeatures();
 
     // Scroll suave para hash na URL após carregamento

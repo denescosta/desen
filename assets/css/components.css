@@ -17,40 +17,62 @@ header h1 {
 }
 
 header nav {
-  margin-top: 1rem;
+  display: flex;
+  gap: 25px;
 }
 
 header nav a {
   color: #333;
   text-decoration: none;
-  margin-right: 2rem;
   font-weight: 500;
   transition: color 0.3s ease;
 }
 
 header nav a:hover {
-  color: #007bff;
+  color: #0c444e;
 }
 
 header nav a.active {
-  color: #007bff;
-  border-bottom: 2px solid #007bff;
+  color: #0c444e;
+  border-bottom: 2px solid #0c444e;
 }
 
 header .logo {
   height: 56px;
-  width: auto;
+  width: 150px;
   display: block;
 }
 
 .header-container {
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-around;
   gap: 40px;
+  align-items: center;
 }
 
 header .logo img {
   height: -webkit-fill-available;
+  width: auto;
+  display: block;
+}
+
+header .whatsapp-button {
+  height: 40px;
+  width: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  border: 1px solid black;
+  border-radius: 1000px;
+  padding: 5px 10px;
+}
+
+header .whatsapp-button img {
+  height: 20px;
   width: auto;
   display: block;
 }
@@ -73,7 +95,7 @@ footer p {
 .btn {
   display: inline-block;
   padding: 0.75rem 1.5rem;
-  background: #007bff;
+  background: #0c444e;
   color: white;
   text-decoration: none;
   border-radius: 5px;
@@ -112,4 +134,86 @@ footer p {
 .card p {
   color: #666;
   line-height: 1.6;
+}
+
+#botao-sidebar {
+  display: none;
+}
+
+.sidebar {
+  display: none;
+}
+
+@media (max-width: 810px) {
+  .header-container {
+    justify-content: space-between;
+    padding: 0 20px;
+    width: 100%;
+  }
+
+  .header-container .logo {
+    order: 2;
+    width: auto;
+  }
+
+  .header-container .main-nav {
+    display: none;
+  }
+
+  .header-container .whatsapp-button {
+    order: 3;
+    width: auto;
+  }
+
+  .sidebar {
+    width: 250px;
+    height: 100vh;
+    background-color: #f0f0f0;
+    position: fixed;
+    top: 0;
+    left: -250px;
+    /* Começa escondida */
+    transition: left 0.3s ease;
+    /* Transição suave */
+    padding: 20px;
+    display: block;
+  }
+
+  .sidebar.aberta {
+    left: -250px;
+    /* Move para a esquerda para exibir */
+  }
+
+  #botao-sidebar {
+    /* Estilos do botão aqui */
+    background-color: transparent;
+    color: white;
+    border: none;
+    cursor: pointer;
+    display: block;
+  }
+
+  #botao-sidebar img {
+    height: 30px;
+    width: auto;
+    display: block;
+  }
+
+  body.sidebar-aberta .site-content {
+    transform: translateX(250px);
+    transition: transform 0.3s ease;
+  }
+
+  .site-content {
+    transition: transform 0.3s ease;
+  }
+
+  #header.sidebar-aberta {
+    transform: translateX(250px);
+    transition: transform 0.3s ease;
+  }
+
+  .txt-whatsapp {
+    display: none;
+  }
 }
