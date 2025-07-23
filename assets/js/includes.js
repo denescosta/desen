@@ -96,8 +96,17 @@ document.addEventListener('DOMContentLoaded', async () => {
   const pageConfig = PAGE_CONFIGS[currentPage];
 
   if (pageConfig) {
-    // console.log(`📄 Carregando seções para: ${currentPage}`);
+    console.log(`📄 Carregando seções para: ${currentPage}`);
     await ComponentLoader.loadMultiple(pageConfig);
+    // Scroll suave para âncora após carregar seções, se necessário
+    if (window.pendingScrollTarget) {
+      setTimeout(() => {
+        if (typeof smoothScroll === 'function') {
+          smoothScroll(window.pendingScrollTarget);
+        }
+        window.pendingScrollTarget = null;
+      }, 50);
+    }
   }
 
   // console.log('✨ Carregamento completo!');

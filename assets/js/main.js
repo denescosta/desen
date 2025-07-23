@@ -3,14 +3,17 @@
 // Configurações globais
 const CONFIG = {
   animationDuration: 300,
-  scrollOffset: 80
+  scrollOffset: 0
 };
 
 // Função para scroll suave
 function smoothScroll(target) {
-  const element = document.querySelector(target);
+  let element = document.querySelector(target);
   if (element) {
-    const offsetTop = element.offsetTop - CONFIG.scrollOffset;
+    // Se houver um h2 dentro da seção, rola até ele
+    const h2 = element.querySelector('h2');
+    if (h2) element = h2;
+    const offsetTop = element.getBoundingClientRect().top + window.pageYOffset - CONFIG.scrollOffset;
     window.scrollTo({
       top: offsetTop,
       behavior: 'smooth'
@@ -107,6 +110,26 @@ function toggleSidebar() {
         document.getElementById('header').classList.remove('sidebar-aberta');
       }
     });
+    // Fecha a sidebar ao clicar em qualquer link da sidebar
+    const sidebarLinks = sidebar.querySelectorAll('a');
+    sidebarLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        const href = link.getAttribute('href');
+        const isAnchor = href && href.startsWith('#');
+        if (isAnchor) {
+          e.preventDefault();
+          history.replaceState(null, '', href); // Atualiza o hash sem scroll automático do navegador
+        }
+        sidebar.classList.remove('aberta');
+        document.body.classList.remove('sidebar-aberta');
+        document.getElementById('header').classList.remove('sidebar-aberta');
+        // Força o navegador a processar o fechamento antes do scroll
+        void sidebar.offsetWidth;
+        if (isAnchor) {
+          smoothScroll(href);
+        }
+      });
+    });
   }
 }
 
@@ -137,7 +160,9 @@ function initHomePage() {
     if (btn.getAttribute('href') && btn.getAttribute('href').startsWith('#')) {
       btn.addEventListener('click', (e) => {
         e.preventDefault();
-        smoothScroll(btn.getAttribute('href'));
+        const href = btn.getAttribute('href');
+        history.replaceState(null, '', href); // Atualiza o hash sem scroll automático do navegador
+        smoothScroll(href);
       });
     }
   });
