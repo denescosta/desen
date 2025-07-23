@@ -14,14 +14,14 @@
 </head>
 
 <body>
-  <header id="header"></header>
+  <div id="header"></div>
   <div class="site-content">
     <div class="conheca-layout">
-      <div class="sidebar-area">
-        <div class="sidebar-title-fixed">
-          <h3 class="sidebar-title">Pontos Turísticos</h3>
+      <div class="sdb-area">
+        <div class="sdb-title-fixed">
+          <h3 class="sdb-title">Pontos Turísticos</h3>
         </div>
-        <nav class="conheca-sidebar">
+        <nav class="conheca-sdb">
           <ul>
             <li><a href="#ponta-negra">Praia de Ponta Negra</a></li>
             <li><a href="#forte">Praia do Forte</a></li>
@@ -232,8 +232,8 @@
   <script src="../assets/js/includes.js"></script>
   <script src="../assets/js/main.js"></script>
   <script>
-    // Scroll suave para sidebar
-    document.querySelectorAll('.conheca-sidebar a').forEach(link => {
+    // Scroll suave para sdb
+    document.querySelectorAll('.conheca-sdb a').forEach(link => {
       link.addEventListener('click', function (e) {
         e.preventDefault();
         const target = document.querySelector(this.getAttribute('href'));

@@ -144,7 +144,99 @@ footer p {
   display: none;
 }
 
+/* Footer styles */
+.footer {
+  background: #0c454e;
+  color: #fff;
+  padding: 40px 20px 20px;
+  font-size: 1rem;
+}
+
+.footer-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+  gap: 32px;
+  text-align: left;
+  max-width: 900px;
+}
+
+.footer-col {
+  flex: 1 1 220px;
+  min-width: 200px;
+  margin-bottom: 24px;
+}
+
+.footer-col h3 {
+  margin-bottom: 16px;
+  font-size: 1.2rem;
+  color: #ffd700;
+}
+
+.footer-col ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-col ul li {
+  margin-bottom: 10px;
+}
+
+.footer-col ul li a {
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-col ul li a:hover {
+  color: #ffd700;
+}
+
+.footer-social {
+  margin-top: 12px;
+}
+
+.footer-btn {
+  display: inline-block;
+  margin-right: 10px;
+  margin-bottom: 8px;
+  padding: 8px 18px;
+  background: #ffd700;
+  color: #222;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background 0.2s, color 0.2s;
+}
+
+.footer-btn:hover {
+  background: #fff;
+  color: #222;
+}
+
+@media (max-width: 800px) {
+  .footer-container {
+    flex-direction: column;
+    gap: 0;
+    display: flex;
+    align-items: flex-start;
+  }
+
+  .footer-col {
+    margin-bottom: 32px;
+  }
+}
+
 @media (max-width: 810px) {
+  .divider {
+    display: flex;
+    width: 100%;
+    border-top: 1px solid #0c444e;
+  }
+
   .header-container {
     justify-content: space-between;
     padding: 0 20px;
@@ -184,6 +276,22 @@ footer p {
     /* Move para a esquerda para exibir */
   }
 
+  .sidebar ul li {
+    list-style: none;
+    margin-bottom: 10px
+  }
+
+  .sidebar ul li a {
+    text-decoration: none;
+    color: black;
+    font-weight: 500;
+  }
+
+  .sidebar ul li a:hover {
+    color: #ffd700;
+    font-weight: 700;
+  }
+
   #botao-sidebar {
     /* Estilos do botão aqui */
     background-color: transparent;
@@ -215,5 +323,17 @@ footer p {
 
   .txt-whatsapp {
     display: none;
+  }
+
+  body.sidebar-aberta {
+    overflow-y: hidden !important;
+    height: 100vh;
+    position: relative;
+    width: 100vw;
+    touch-action: none;
+  }
+
+  body.sidebar-aberta .site-content {
+    overflow: hidden;
   }
 }

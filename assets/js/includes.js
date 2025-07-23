@@ -11,12 +11,12 @@ class ComponentLoader {
       const container = document.getElementById(containerId);
       if (container) {
         container.innerHTML = content;
-        console.log(`✅ Carregado: ${componentPath}`);
+        // console.log(`✅ Carregado: ${componentPath}`);
       } else {
-        console.warn(`⚠️ Container '${containerId}' não encontrado`);
+        // console.warn(`⚠️ Container '${containerId}' não encontrado`);
       }
     } catch (error) {
-      console.error(`❌ Erro ao carregar ${componentPath}:`, error);
+      // console.error(`❌ Erro ao carregar ${componentPath}:`, error);
     }
   }
 
@@ -40,10 +40,10 @@ const PAGE_CONFIGS = {
     { id: 'hero', path: '../sections/hero.html' },
     { id: 'about', path: '../sections/about.html' },
     { id: 'tours', path: '../sections/tours.html' },
-    { id: 'testimonials', path: '../sections/testimonials.html' },
-    { id: 'faq', path: '../sections/faq.html' },
-    { id: 'blog', path: '../sections/blog.html' },
-    { id: 'contact', path: '../sections/contact.html' }
+    { id: 'testimonials', path: '../sections/testimonials.html' }
+    // { id: 'faq', path: '../sections/faq.html' },
+    // { id: 'blog', path: '../sections/blog.html' },
+    // { id: 'contact', path: '../sections/contact.html' }
   ],
   'conheca.html': [
     { id: 'conheca-page', path: '../sections/conheca.html' }
@@ -80,11 +80,12 @@ function setActiveNavLink() {
 
 // Auto-carregamento quando a página carregar
 document.addEventListener('DOMContentLoaded', async () => {
-  console.log('🚀 Iniciando carregamento de componentes...');
+  // console.log('🚀 Iniciando carregamento de componentes...');
 
   // Carregar componentes comuns (header, footer)
   await ComponentLoader.loadMultiple([
-    { id: 'header', path: COMPONENTS.header }
+    { id: 'header', path: COMPONENTS.header },
+    { id: 'footer', path: COMPONENTS.footer }
   ]);
 
   // Destacar link ativo após carregar header
@@ -95,11 +96,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   const pageConfig = PAGE_CONFIGS[currentPage];
 
   if (pageConfig) {
-    console.log(`📄 Carregando seções para: ${currentPage}`);
+    // console.log(`📄 Carregando seções para: ${currentPage}`);
     await ComponentLoader.loadMultiple(pageConfig);
   }
 
-  console.log('✨ Carregamento completo!');
+  // console.log('✨ Carregamento completo!');
 });
 
 // Função utilitária para carregar componente individual

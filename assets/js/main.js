@@ -42,7 +42,7 @@ function handleFormSubmit(event) {
   const formData = new FormData(form);
 
   // Aqui você pode adicionar lógica para enviar os dados
-  console.log('Formulário enviado:', Object.fromEntries(formData));
+  // console.log('Formulário enviado:', Object.fromEntries(formData));
 
   // Exemplo de feedback visual
   const submitButton = form.querySelector('button[type="submit"]');
@@ -129,7 +129,7 @@ function initPageSpecificFeatures() {
 
 // Inicialização da página inicial
 function initHomePage() {
-  console.log('🏠 Inicializando página inicial...');
+  // console.log('🏠 Inicializando página inicial...');
 
   // Adicionar listeners para botões CTA e navegação âncora
   const anchorButtons = document.querySelectorAll('.btn, .cta-button, .tour-btn, .secondary-button, .hero-btn, nav a');
@@ -145,7 +145,7 @@ function initHomePage() {
 
 // Inicialização da página sobre
 function initAboutPage() {
-  console.log('👤 Inicializando página sobre...');
+  // console.log('👤 Inicializando página sobre...');
 
   // Adicionar efeitos específicos da página sobre
   const skills = document.querySelectorAll('.skill');
@@ -156,7 +156,7 @@ function initAboutPage() {
 
 // Inicialização da página contato
 function initContactPage() {
-  console.log('📞 Inicializando página contato...');
+  // console.log('📞 Inicializando página contato...');
 
   // Adicionar validação e handlers para formulários
   const forms = document.querySelectorAll('form');
@@ -219,7 +219,7 @@ function isValidEmail(email) {
 
 // Inicialização quando o DOM estiver pronto
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('🎯 Inicializando scripts principais...');
+  // console.log('🎯 Inicializando scripts principais...');
 
   // Aguardar carregamento dos componentes
   setTimeout(() => {
@@ -236,7 +236,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }, 200);
     }
 
-    console.log('✅ Scripts principais inicializados!');
+    // console.log('✅ Scripts principais inicializados!');
   }, 200);
 });
 

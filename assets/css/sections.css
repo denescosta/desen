@@ -1,20 +1,38 @@
 /* sections.css - Estilos para seções específicas */
 
 /* Hero Section */
+#hero {
+  overflow: hidden;
+  justify-items: anchor-center;
+  padding: 0 20px;
+}
+
 .hero {
-  height: 600px;
+  height: auto;
+  width: 120%;
   display: flex;
   align-items: flex-start;
   justify-content: center;
   text-align: center;
   color: white;
-  padding: 20px 50px;
+  padding: 20px 50px 60px 50px;
+  box-shadow: inset 0px -20px 20px 5px rgb(255 255 255 / 100%);
+  transition: box-shadow 0.3s ease;
+}
+
+.hero-content {
+  width: 90%;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
 }
 
 .hero-content h1 {
   font-size: 3rem;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
   animation: fadeInUp 1s ease;
+  text-shadow: 3px 3px 1px #0c454e;
+  line-height: 1;
 }
 
 .hero-content p {
@@ -22,6 +40,7 @@
   margin-bottom: 2rem;
   opacity: 0.9;
   animation: fadeInUp 1s ease 0.3s both;
+  text-shadow: 2px 2px 1px #0c454e;
 }
 
 .hero-content .btn {
@@ -30,6 +49,21 @@
 
 .hero-content img {
   height: 300px;
+  filter: drop-shadow(5px 5px 1px #0c454e);
+  margin-bottom: 20px;
+}
+
+.cta-button {
+  background: #0c444e;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 2rem;
+}
+
+.cta-button:hover {
+  color: #ffd700;
 }
 
 /* About (Quem Somos) Section */
@@ -546,7 +580,7 @@
   position: relative;
 }
 
-.sidebar-title-fixed {
+.sdb-title-fixed {
   min-width: 200px;
   margin-right: 0;
   margin-left: 0;
@@ -560,7 +594,7 @@
   padding: 10px 10px 0 10px;
 }
 
-.conheca-sidebar {
+.conheca-sdb {
   position: sticky;
   top: 0;
   min-width: 200px;
@@ -575,17 +609,17 @@
   flex-direction: column;
 }
 
-.conheca-sidebar ul {
+.conheca-sdb ul {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.conheca-sidebar li {
+.conheca-sdb li {
   margin-bottom: 7px;
 }
 
-.conheca-sidebar a {
+.conheca-sdb a {
   color: #1976d2;
   font-weight: 600;
   text-decoration: none;
@@ -596,13 +630,13 @@
   border-radius: 6px;
 }
 
-.conheca-sidebar a:hover {
+.conheca-sdb a:hover {
   color: #0d47a1;
   background: #e3e6ee;
   text-decoration: underline;
 }
 
-.sidebar-title {
+.sdb-title {
   font-size: 1.13rem;
   color: #1a237e;
   font-weight: 700;
@@ -629,7 +663,7 @@
     gap: 18px;
   }
 
-  .sidebar-title-fixed {
+  .sdb-title-fixed {
     position: static;
     min-width: 0;
     max-width: 100%;
@@ -639,7 +673,7 @@
     background: transparent;
   }
 
-  .conheca-sidebar {
+  .conheca-sdb {
     position: static;
     min-width: 0;
     max-width: 100%;
@@ -688,5 +722,9 @@
 
   .services-grid {
     grid-template-columns: 1fr;
+  }
+
+  .cta-button {
+    font-size: 1.5rem;
   }
 }
