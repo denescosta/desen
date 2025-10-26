@@ -39,30 +39,114 @@ function animateOnScroll() {
 }
 
 // Função para manipular formulários
-function handleFormSubmit(event) {
+async function handleFormSubmit(event) {
   event.preventDefault();
   const form = event.target;
-  const formData = new FormData(form);
+  
+  // Verificar se é o formulário de contato
+  if (form.id === 'contato-form') {
+    await handleContactFormSubmit(form);
+  } else {
+    // Comportamento padrão para outros formulários
+    const formData = new FormData(form);
+    console.log('Formulário enviado:', Object.fromEntries(formData));
+    
+    const submitButton = form.querySelector('button[type="submit"]');
+    const originalText = submitButton.textContent;
+    
+    submitButton.textContent = 'Enviando...';
+    submitButton.disabled = true;
+    
+    // Simular envio
+    setTimeout(() => {
+      submitButton.textContent = 'Enviado!';
+      setTimeout(() => {
+        submitButton.textContent = originalText;
+        submitButton.disabled = false;
+        form.reset();
+      }, 2000);
+    }, 1000);
+  }
+}
 
-  // Aqui você pode adicionar lógica para enviar os dados
-  // console.log('Formulário enviado:', Object.fromEntries(formData));
-
-  // Exemplo de feedback visual
+// Função para enviar email via EmailJS
+async function handleContactFormSubmit(form) {
   const submitButton = form.querySelector('button[type="submit"]');
+  const messageDiv = document.getElementById('form-message');
   const originalText = submitButton.textContent;
-
+  
+  // Validar campos obrigatórios
+  const nome = document.getElementById('nome').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const telefone = document.getElementById('telefone').value.trim();
+  const mensagem = document.getElementById('mensagem').value.trim();
+  
+  if (!nome || !email || !mensagem) {
+    showMessage(messageDiv, 'Por favor, preencha todos os campos obrigatórios.', 'error');
+    return;
+  }
+  
+  // Validar email
+  if (!isValidEmail(email)) {
+    showMessage(messageDiv, 'Por favor, insira um e-mail válido.', 'error');
+    return;
+  }
+  
+  // Preparar dados para enviar
+  const templateParams = {
+    from_name: nome,
+    from_email: email,
+    phone: telefone || 'Não informado',
+    message: mensagem,
+    to_email: 'denes_11@hotmail.com'
+  };
+  
   submitButton.textContent = 'Enviando...';
   submitButton.disabled = true;
-
-  // Simular envio
-  setTimeout(() => {
+  messageDiv.style.display = 'none';
+  
+  try {
+    // Enviar email via EmailJS
+    await emailjs.send(
+      'service_jx6aned',      // Substitua pelo Service ID do EmailJS
+      'template_jcygbvs',     // Substitua pelo Template ID do EmailJS
+      templateParams
+    );
+    
+    showMessage(messageDiv, '✅ Mensagem enviada com sucesso! Entraremos em contato em breve.', 'success');
     submitButton.textContent = 'Enviado!';
+    form.reset();
+    
     setTimeout(() => {
       submitButton.textContent = originalText;
       submitButton.disabled = false;
-      form.reset();
-    }, 2000);
-  }, 1000);
+    }, 3000);
+    
+  } catch (error) {
+    console.error('Erro ao enviar email:', error);
+    showMessage(messageDiv, '❌ Erro ao enviar mensagem. Tente novamente ou entre em contato pelo WhatsApp.', 'error');
+    submitButton.textContent = originalText;
+    submitButton.disabled = false;
+  }
+}
+
+// Função para mostrar mensagens de feedback
+function showMessage(element, message, type) {
+  element.textContent = message;
+  element.style.display = 'block';
+  element.style.padding = '10px';
+  element.style.borderRadius = '6px';
+  element.style.marginTop = '10px';
+  
+  if (type === 'success') {
+    element.style.backgroundColor = '#d4edda';
+    element.style.color = '#155724';
+    element.style.border = '1px solid #c3e6cb';
+  } else {
+    element.style.backgroundColor = '#f8d7da';
+    element.style.color = '#721c24';
+    element.style.border = '1px solid #f5c6cb';
+  }
 }
 
 // Função para adicionar efeitos visuais

@@ -95,7 +95,7 @@
 
 .about-content h2 {
   font-size: 2.1rem;
-  color: #1a237e;
+  color: #0c444e;
   margin-bottom: 18px;
 }
 
@@ -264,10 +264,16 @@
   padding: 0 20px;
 }
 
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
 .tours h2 {
   text-align: center;
   font-size: 2.4rem;
-  color: #1a237e;
+  color: #0c444e;
   margin-bottom: 36px;
   letter-spacing: 1px;
 }
@@ -288,6 +294,7 @@
   align-items: flex-start;
   transition: transform 0.18s, box-shadow 0.18s;
   border: 1px solid #e3e6ee;
+  line-height: 1;
 }
 
 .tour-card:hover {
@@ -297,7 +304,7 @@
 
 .tour-card h3 {
   font-size: 1.25rem;
-  color: #1a237e;
+  color: #0c444e;
   margin-bottom: 10px;
 }
 
@@ -313,7 +320,7 @@
 
 .tour-btn {
   margin-top: auto;
-  background: #1976d2;
+  background: #0c444e;
   color: #fff;
   border: none;
   border-radius: 6px;
@@ -324,12 +331,17 @@
   transition: background 0.18s, box-shadow 0.18s;
   box-shadow: 0 2px 8px rgba(25, 118, 210, 0.08);
   cursor: pointer;
-  display: inline-block;
+  display: flex;
+  gap: 5px;
 }
 
 .tour-btn:hover {
-  background: #0d47a1;
+  color: #ffd700;
   box-shadow: 0 4px 16px rgba(25, 118, 210, 0.16);
+}
+
+.tour-btn img {
+  height: 15px;
 }
 
 /* Testimonials Section */
@@ -347,7 +359,7 @@
 .testimonials h2 {
   text-align: center;
   font-size: 2.2rem;
-  color: #1a237e;
+  color: #0c444e;
   margin-bottom: 36px;
   letter-spacing: 1px;
 }
@@ -394,7 +406,7 @@
 
 .testimonial-author {
   font-weight: 700;
-  color: #1a237e;
+  color: #0c444e;
 }
 
 .testimonial-date {
@@ -418,7 +430,7 @@
 .conheca h2 {
   text-align: center;
   font-size: 2.2rem;
-  color: #1a237e;
+  color: #0c444e;
   margin-bottom: 28px;
   letter-spacing: 1px;
 }
@@ -494,7 +506,7 @@
 
 .contato-form-area h2 {
   font-size: 2rem;
-  color: #1a237e;
+  color: #0c444e;
   margin-bottom: 18px;
 }
 
@@ -637,7 +649,7 @@
 
 .sdb-title {
   font-size: 1.13rem;
-  color: #1a237e;
+  color: #0c444e;
   font-weight: 700;
   margin-bottom: 10px;
   padding-left: 4px;

@@ -11,6 +11,13 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+  <!-- EmailJS -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script type="text/javascript">
+    (function () {
+      emailjs.init("EpBcizA3ThhOwWemI"); // Substitua pela sua chave pública do EmailJS
+    })();
+  </script>
 </head>
 
 <body>
@@ -20,7 +27,7 @@
       <div class="container contato-flex">
         <div class="contato-form-area">
           <h2>Contato</h2>
-          <form class="contato-form">
+          <form class="contato-form" id="contato-form">
             <label for="nome">Nome</label>
             <input type="text" id="nome" name="nome" placeholder="Seu nome" required>
             <label for="email">E-mail</label>
@@ -30,6 +37,7 @@
             <label for="mensagem">Mensagem</label>
             <textarea id="mensagem" name="mensagem" rows="5" placeholder="Digite sua mensagem" required></textarea>
             <button type="submit">Enviar</button>
+            <div id="form-message" style="margin-top: 10px; display: none;"></div>
           </form>
         </div>
         <div class="contato-info-area">
