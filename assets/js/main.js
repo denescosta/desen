@@ -42,9 +42,11 @@ function animateOnScroll() {
 async function handleFormSubmit(event) {
   event.preventDefault();
   const form = event.target;
+  console.log('Formulário submetido:', form.id || form.className);
   
   // Verificar se é o formulário de contato
   if (form.id === 'contato-form') {
+    console.log('Processando formulário de contato...');
     await handleContactFormSubmit(form);
   } else {
     // Comportamento padrão para outros formulários
@@ -73,13 +75,26 @@ async function handleFormSubmit(event) {
 async function handleContactFormSubmit(form) {
   const submitButton = form.querySelector('button[type="submit"]');
   const messageDiv = document.getElementById('form-message');
+  
+  if (!submitButton) {
+    console.error('Botão de submit não encontrado');
+    return;
+  }
+  
   const originalText = submitButton.textContent;
   
+  // Verificar se EmailJS está carregado
+  if (typeof emailjs === 'undefined') {
+    console.error('EmailJS não está carregado');
+    showMessage(messageDiv, '❌ Erro: EmailJS não está carregado. Recarregue a página.', 'error');
+    return;
+  }
+  
   // Validar campos obrigatórios
-  const nome = document.getElementById('nome').value.trim();
-  const email = document.getElementById('email').value.trim();
-  const telefone = document.getElementById('telefone').value.trim();
-  const mensagem = document.getElementById('mensagem').value.trim();
+  const nome = document.getElementById('nome')?.value.trim() || '';
+  const email = document.getElementById('email')?.value.trim() || '';
+  const telefone = document.getElementById('telefone')?.value.trim() || '';
+  const mensagem = document.getElementById('mensagem')?.value.trim() || '';
   
   if (!nome || !email || !mensagem) {
     showMessage(messageDiv, 'Por favor, preencha todos os campos obrigatórios.', 'error');
@@ -103,16 +118,19 @@ async function handleContactFormSubmit(form) {
   
   submitButton.textContent = 'Enviando...';
   submitButton.disabled = true;
-  messageDiv.style.display = 'none';
+  if (messageDiv) {
+    messageDiv.style.display = 'none';
+  }
   
   try {
     // Enviar email via EmailJS
-    await emailjs.send(
-      'service_q4iafhd',      // Substitua pelo Service ID do EmailJS
-      'template_jcygbvs',     // Substitua pelo Template ID do EmailJS
+    const response = await emailjs.send(
+      'service_q4iafhd',
+      'template_jcygbvs',
       templateParams
     );
     
+    console.log('Email enviado com sucesso:', response);
     showMessage(messageDiv, '✅ Mensagem enviada com sucesso! Entraremos em contato em breve.', 'success');
     submitButton.textContent = 'Enviado!';
     form.reset();
@@ -124,7 +142,17 @@ async function handleContactFormSubmit(form) {
     
   } catch (error) {
     console.error('Erro ao enviar email:', error);
-    showMessage(messageDiv, '❌ Erro ao enviar mensagem. Tente novamente ou entre em contato pelo WhatsApp.', 'error');
+    let errorMessage = '❌ Erro ao enviar mensagem. Tente novamente ou entre em contato pelo WhatsApp.';
+    
+    // Mensagens de erro mais específicas
+    if (error.text) {
+      console.error('Detalhes do erro:', error.text);
+      if (error.text.includes('Invalid service ID') || error.text.includes('Invalid template ID')) {
+        errorMessage = '❌ Erro de configuração. Verifique as credenciais do EmailJS.';
+      }
+    }
+    
+    showMessage(messageDiv, errorMessage, 'error');
     submitButton.textContent = originalText;
     submitButton.disabled = false;
   }
@@ -132,6 +160,27 @@ async function handleContactFormSubmit(form) {
 
 // Função para mostrar mensagens de feedback
 function showMessage(element, message, type) {
+  // Verificar se o elemento existe
+  if (!element) {
+    console.error('Elemento de mensagem não encontrado');
+    // Tentar encontrar novamente
+    element = document.getElementById('form-message');
+    if (!element) {
+      console.error('Não foi possível encontrar o elemento #form-message');
+      // Criar elemento se não existir
+      const form = document.getElementById('contato-form');
+      if (form) {
+        element = document.createElement('div');
+        element.id = 'form-message';
+        element.style.marginTop = '10px';
+        form.appendChild(element);
+      } else {
+        alert(message); // Fallback: usar alert se não conseguir criar elemento
+        return;
+      }
+    }
+  }
+  
   element.textContent = message;
   element.style.display = 'block';
   element.style.padding = '10px';
@@ -147,6 +196,9 @@ function showMessage(element, message, type) {
     element.style.color = '#721c24';
     element.style.border = '1px solid #f5c6cb';
   }
+  
+  // Scroll suave até a mensagem
+  element.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
 // Função para adicionar efeitos visuais
@@ -265,11 +317,31 @@ function initAboutPage() {
 
 // Inicialização da página contato
 function initContactPage() {
-  // console.log('📞 Inicializando página contato...');
+  console.log('📞 Inicializando página contato...');
 
   // Adicionar validação e handlers para formulários
   const forms = document.querySelectorAll('form');
+  console.log('Formulários encontrados:', forms.length);
+  
+  if (forms.length === 0) {
+    console.warn('Nenhum formulário encontrado. Tentando novamente...');
+    // Tentar novamente após um delay caso o includes.js ainda não tenha carregado
+    setTimeout(() => {
+      const formsRetry = document.querySelectorAll('form');
+      formsRetry.forEach(form => {
+        console.log('Adicionando listener ao formulário:', form.id || form.className);
+        form.addEventListener('submit', handleFormSubmit);
+        
+        const inputs = form.querySelectorAll('input, textarea');
+        inputs.forEach(input => {
+          input.addEventListener('blur', validateField);
+        });
+      });
+    }, 500);
+  }
+  
   forms.forEach(form => {
+    console.log('Adicionando listener ao formulário:', form.id || form.className);
     form.addEventListener('submit', handleFormSubmit);
 
     // Adicionar validação em tempo real
@@ -278,6 +350,14 @@ function initContactPage() {
       input.addEventListener('blur', validateField);
     });
   });
+  
+  // Verificar se o formulário de contato existe
+  const contatoForm = document.getElementById('contato-form');
+  if (contatoForm) {
+    console.log('✅ Formulário de contato encontrado');
+  } else {
+    console.warn('⚠️ Formulário de contato não encontrado');
+  }
 }
 
 // Função para validar campos individuais
@@ -329,6 +409,29 @@ function isValidEmail(email) {
 // Inicialização quando o DOM estiver pronto
 document.addEventListener('DOMContentLoaded', () => {
   // console.log('🎯 Inicializando scripts principais...');
+
+  // Inicializar EmailJS se estiver disponível
+  if (typeof emailjs !== 'undefined') {
+    try {
+      emailjs.init("EpBcizA3ThhOwWemI");
+      console.log('EmailJS inicializado com sucesso');
+    } catch (error) {
+      console.error('Erro ao inicializar EmailJS:', error);
+    }
+  } else {
+    console.warn('EmailJS ainda não está carregado, tentando novamente...');
+    // Tentar novamente após um delay
+    setTimeout(() => {
+      if (typeof emailjs !== 'undefined') {
+        try {
+          emailjs.init("EpBcizA3ThhOwWemI");
+          console.log('EmailJS inicializado com sucesso (tentativa 2)');
+        } catch (error) {
+          console.error('Erro ao inicializar EmailJS:', error);
+        }
+      }
+    }, 500);
+  }
 
   // Aguardar carregamento dos componentes
   setTimeout(() => {
