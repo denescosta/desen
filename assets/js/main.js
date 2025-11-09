@@ -528,3 +528,438 @@ document.addEventListener('DOMContentLoaded', () => {
 // Funcionalidades globais
 window.smoothScroll = smoothScroll;
 window.validateField = validateField;
+
+// ==================== TOURS CAROUSEL ====================
+
+// Função para inicializar o carrossel de tours
+function initToursCarousel() {
+  const carouselWrapper = document.querySelector('.tours-carousel-wrapper');
+  if (!carouselWrapper) return;
+
+  const carousel = carouselWrapper.querySelector('.tours-carousel');
+  const toursList = carouselWrapper.querySelector('.tours-list');
+  const tourCards = toursList ? toursList.querySelectorAll('.tour-card') : [];
+  const prevBtn = carouselWrapper.querySelector('.carousel-btn-prev');
+  const nextBtn = carouselWrapper.querySelector('.carousel-btn-next');
+  
+  // Tentar encontrar o container de indicadores de várias formas
+  let indicatorsContainer = carouselWrapper.querySelector('.carousel-indicators');
+  
+  // Se não encontrou, tentar encontrar na seção tours
+  if (!indicatorsContainer) {
+    const toursSection = document.getElementById('tours');
+    if (toursSection) {
+      indicatorsContainer = toursSection.querySelector('.carousel-indicators');
+    }
+  }
+  
+  // Se ainda não encontrou, criar o container após o botão next
+  if (!indicatorsContainer) {
+    indicatorsContainer = document.createElement('div');
+    indicatorsContainer.className = 'carousel-indicators';
+    // Inserir após o botão next ou no final do wrapper
+    if (nextBtn && nextBtn.nextSibling) {
+      carouselWrapper.insertBefore(indicatorsContainer, nextBtn.nextSibling);
+    } else {
+      carouselWrapper.appendChild(indicatorsContainer);
+    }
+  }
+
+  if (!carousel || !toursList || tourCards.length === 0) {
+    return;
+  }
+
+  let currentIndex = 0;
+  let cardsPerView = 3;
+  let isDragging = false;
+  let startPos = 0;
+  let currentTranslate = 0;
+  let prevTranslate = 0;
+  let animationID = 0;
+
+  // Calcular quantos cards mostrar baseado no tamanho da tela
+  function updateCardsPerView() {
+    const width = window.innerWidth;
+    if (width <= 768) {
+      cardsPerView = 1;
+    } else if (width <= 1024) {
+      cardsPerView = 2;
+    } else {
+      cardsPerView = 3;
+    }
+    updateCarousel();
+  }
+
+  // Atualizar posição do carrossel
+  function updateCarousel() {
+    if (tourCards.length === 0) return;
+    
+    const cardWidth = tourCards[0].offsetWidth;
+    const gap = 32; // gap do CSS
+    const cardWidthWithGap = cardWidth + gap;
+    const maxIndex = Math.max(0, tourCards.length - cardsPerView);
+    currentIndex = Math.min(currentIndex, maxIndex);
+    
+    const translateX = -currentIndex * cardWidthWithGap;
+    toursList.style.transform = `translateX(${translateX}px)`;
+    
+    prevTranslate = translateX;
+    currentTranslate = translateX;
+    
+    updateIndicators();
+    updateButtons();
+  }
+
+  // Atualizar indicadores
+  function updateIndicators() {
+    if (!indicatorsContainer) return;
+    
+    indicatorsContainer.innerHTML = '';
+    
+    // Calcular quantos slides/páginas existem
+    const maxIndex = Math.max(0, tourCards.length - cardsPerView);
+    const totalSlides = maxIndex + 1; // +1 porque começamos do índice 0
+    
+    // Se houver apenas 1 slide, não mostrar indicadores
+    if (totalSlides <= 1) {
+      indicatorsContainer.style.display = 'none';
+      return;
+    }
+    
+    indicatorsContainer.style.display = 'flex';
+    
+    // Criar um indicador para cada posição possível do carrossel
+    for (let i = 0; i < totalSlides; i++) {
+      const indicator = document.createElement('button');
+      indicator.className = 'carousel-indicator';
+      indicator.setAttribute('aria-label', `Ir para slide ${i + 1}`);
+      indicator.setAttribute('type', 'button');
+      
+      // O indicador está ativo se currentIndex corresponde a este índice
+      if (i === currentIndex) {
+        indicator.classList.add('active');
+      }
+      
+      indicator.addEventListener('click', () => {
+        currentIndex = i;
+        updateCarousel();
+      });
+      
+      indicatorsContainer.appendChild(indicator);
+    }
+  }
+
+  // Atualizar estado dos botões
+  function updateButtons() {
+    const maxIndex = Math.max(0, tourCards.length - cardsPerView);
+    
+    if (prevBtn) {
+      prevBtn.disabled = currentIndex === 0;
+      prevBtn.style.opacity = currentIndex === 0 ? '0.5' : '1';
+      prevBtn.style.cursor = currentIndex === 0 ? 'not-allowed' : 'pointer';
+    }
+    
+    if (nextBtn) {
+      nextBtn.disabled = currentIndex >= maxIndex;
+      nextBtn.style.opacity = currentIndex >= maxIndex ? '0.5' : '1';
+      nextBtn.style.cursor = currentIndex >= maxIndex ? 'not-allowed' : 'pointer';
+    }
+  }
+
+  // Navegar para o próximo slide
+  function nextSlide() {
+    const maxIndex = Math.max(0, tourCards.length - cardsPerView);
+    if (currentIndex < maxIndex) {
+      currentIndex++;
+      updateCarousel();
+    }
+  }
+
+  // Navegar para o slide anterior
+  function prevSlide() {
+    if (currentIndex > 0) {
+      currentIndex--;
+      updateCarousel();
+    }
+  }
+
+  // Event listeners para botões
+  if (nextBtn) {
+    nextBtn.addEventListener('click', nextSlide);
+  }
+  
+  if (prevBtn) {
+    prevBtn.addEventListener('click', prevSlide);
+  }
+
+  // ========== SWIPE TOUCH ==========
+  
+  function getPositionX(event) {
+    return event.type.includes('mouse') ? event.clientX : event.touches[0].clientX;
+  }
+
+  function setSliderPosition() {
+    toursList.style.transform = `translateX(${currentTranslate}px)`;
+  }
+
+  function animation() {
+    setSliderPosition();
+    if (isDragging) requestAnimationFrame(animation);
+  }
+
+  function onTouchStart(event) {
+    startPos = getPositionX(event);
+    isDragging = true;
+    animationID = requestAnimationFrame(animation);
+    toursList.style.cursor = 'grabbing';
+    toursList.style.transition = 'none';
+  }
+
+  function onTouchMove(event) {
+    if (!isDragging) return;
+    const currentPosition = getPositionX(event);
+    currentTranslate = prevTranslate + currentPosition - startPos;
+  }
+
+  function onTouchEnd() {
+    if (!isDragging) return;
+    isDragging = false;
+    cancelAnimationFrame(animationID);
+    
+    if (tourCards.length === 0) return;
+    
+    const cardWidth = tourCards[0].offsetWidth;
+    const gap = 32;
+    const cardWidthWithGap = cardWidth + gap;
+    const movedBy = currentTranslate - prevTranslate;
+    
+    // Se moveu mais de 50px, mudar de slide
+    if (Math.abs(movedBy) > 50) {
+      if (movedBy > 0 && currentIndex > 0) {
+        currentIndex--;
+      } else if (movedBy < 0) {
+        const maxIndex = Math.max(0, tourCards.length - cardsPerView);
+        if (currentIndex < maxIndex) {
+          currentIndex++;
+        }
+      }
+    }
+    
+    prevTranslate = -currentIndex * cardWidthWithGap;
+    currentTranslate = prevTranslate;
+    toursList.style.cursor = 'grab';
+    toursList.style.transition = 'transform 0.4s ease-in-out';
+    updateCarousel();
+  }
+
+  // Adicionar event listeners para touch
+  toursList.addEventListener('touchstart', onTouchStart, { passive: true });
+  toursList.addEventListener('touchmove', onTouchMove, { passive: true });
+  toursList.addEventListener('touchend', onTouchEnd);
+  toursList.style.cursor = 'grab';
+
+  // Adicionar event listeners para mouse (opcional, para desktop com drag)
+  let mouseDown = false;
+  toursList.addEventListener('mousedown', (e) => {
+    if (window.innerWidth <= 768) {
+      mouseDown = true;
+      onTouchStart(e);
+    }
+  });
+  
+  toursList.addEventListener('mousemove', (e) => {
+    if (mouseDown && window.innerWidth <= 768) {
+      onTouchMove(e);
+    }
+  });
+  
+  toursList.addEventListener('mouseup', () => {
+    if (mouseDown) {
+      mouseDown = false;
+      onTouchEnd();
+    }
+  });
+  
+  toursList.addEventListener('mouseleave', () => {
+    if (mouseDown) {
+      mouseDown = false;
+      onTouchEnd();
+    }
+  });
+
+  // Inicializar
+  updateCardsPerView();
+  updateCarousel();
+
+  // Atualizar ao redimensionar a janela
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      updateCardsPerView();
+    }, 250);
+  });
+
+}
+
+// Inicializar carrossel quando o DOM estiver pronto
+function initToursCarouselOnLoad() {
+  // Tentar inicializar imediatamente
+  initToursCarousel();
+  
+  // Tentar novamente após um delay (caso seja carregado dinamicamente)
+  setTimeout(() => {
+    initToursCarousel();
+  }, 500);
+  
+  // Tentar após 1 segundo (para includes.js)
+  setTimeout(() => {
+    initToursCarousel();
+  }, 1000);
+}
+
+document.addEventListener('DOMContentLoaded', initToursCarouselOnLoad);
+
+// Observar mudanças no DOM para detectar quando a seção é carregada
+const observer = new MutationObserver((mutations) => {
+  mutations.forEach((mutation) => {
+    if (mutation.addedNodes.length > 0) {
+      const hasToursCarousel = Array.from(mutation.addedNodes).some(node => 
+        node.nodeType === 1 && (
+          node.classList?.contains('tours-carousel-wrapper') ||
+          node.querySelector?.('.tours-carousel-wrapper')
+        )
+      );
+      
+      if (hasToursCarousel) {
+        setTimeout(() => {
+          initToursCarousel();
+        }, 100);
+      }
+    }
+  });
+});
+
+// Iniciar observação quando o DOM estiver pronto
+document.addEventListener('DOMContentLoaded', () => {
+  const toursSection = document.getElementById('tours');
+  if (toursSection) {
+    observer.observe(toursSection, {
+      childList: true,
+      subtree: true
+    });
+  }
+});
+
+// ==================== TESTIMONIALS MARQUEE ====================
+// Função para calcular e ajustar a animação do letreiro infinito
+function initTestimonialsMarquee() {
+  const testimonialsList = document.querySelector('.testimonials-list');
+  if (!testimonialsList) return;
+
+  // Calcular a largura total da primeira metade (cards originais)
+  const cards = testimonialsList.querySelectorAll('.testimonial-card');
+  if (cards.length === 0) return;
+
+  // Contar apenas os cards originais (primeira metade)
+  const originalCardsCount = cards.length / 2;
+  
+  // Detectar gap baseado no tamanho da tela
+  const isMobile = window.innerWidth <= 768;
+  const gap = isMobile ? 16 : 24;
+  
+  // Calcular a largura total incluindo gaps
+  // Pegar o primeiro card original para medir
+  const firstCard = cards[0];
+  if (!firstCard) return;
+  
+  // Calcular usando getBoundingClientRect para precisão
+  let totalWidth = 0;
+  for (let i = 0; i < originalCardsCount; i++) {
+    const card = cards[i];
+    const rect = card.getBoundingClientRect();
+    totalWidth += rect.width;
+    if (i < originalCardsCount - 1) {
+      totalWidth += gap; // Adicionar gap entre cards, mas não após o último
+    }
+  }
+
+  // Ajustar a animação para usar a largura exata calculada
+  const translateValue = -totalWidth;
+  testimonialsList.style.setProperty('--translate-value', `${translateValue}px`);
+  
+  // Criar keyframes dinâmicos
+  const style = document.createElement('style');
+  style.id = 'testimonials-marquee-style';
+  style.textContent = `
+    @keyframes scrollTestimonials {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(var(--translate-value, -50%));
+      }
+    }
+  `;
+  
+  // Remover estilo anterior se existir
+  const oldStyle = document.getElementById('testimonials-marquee-style');
+  if (oldStyle) oldStyle.remove();
+  
+  document.head.appendChild(style);
+}
+
+// Inicializar quando o DOM estiver pronto
+function initTestimonialsMarqueeOnLoad() {
+  initTestimonialsMarquee();
+  
+  // Tentar novamente após um delay (caso seja carregado dinamicamente)
+  setTimeout(() => {
+    initTestimonialsMarquee();
+  }, 500);
+  
+  setTimeout(() => {
+    initTestimonialsMarquee();
+  }, 1000);
+  
+  // Recalcular ao redimensionar
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      initTestimonialsMarquee();
+    }, 250);
+  });
+}
+
+document.addEventListener('DOMContentLoaded', initTestimonialsMarqueeOnLoad);
+
+// Observar mudanças no DOM
+const testimonialsMarqueeObserver = new MutationObserver((mutations) => {
+  mutations.forEach((mutation) => {
+    if (mutation.addedNodes.length > 0) {
+      const hasTestimonials = Array.from(mutation.addedNodes).some(node => 
+        node.nodeType === 1 && (
+          node.classList?.contains('testimonials-list') ||
+          node.querySelector?.('.testimonials-list')
+        )
+      );
+      
+      if (hasTestimonials) {
+        setTimeout(() => {
+          initTestimonialsMarquee();
+        }, 100);
+      }
+    }
+  });
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  const testimonialsSection = document.getElementById('testimonials');
+  if (testimonialsSection) {
+    testimonialsMarqueeObserver.observe(testimonialsSection, {
+      childList: true,
+      subtree: true
+    });
+  }
+});
