@@ -125,7 +125,7 @@ async function handleContactFormSubmit(form) {
   try {
     // Enviar email via EmailJS
     const response = await emailjs.send(
-      'service_q4iafhd',
+      'service_jx6aned',
       'template_jcygbvs',
       templateParams
     );
