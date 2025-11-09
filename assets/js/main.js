@@ -108,7 +108,7 @@ async function handleContactFormSubmit(form) {
   try {
     // Enviar email via EmailJS
     await emailjs.send(
-      'service_jx6aned',      // Substitua pelo Service ID do EmailJS
+      'service_q4iafhd',      // Substitua pelo Service ID do EmailJS
       'template_jcygbvs',     // Substitua pelo Template ID do EmailJS
       templateParams
     );
