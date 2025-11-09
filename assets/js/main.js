@@ -271,10 +271,30 @@ function toggleSidebar() {
 
 // Função para adicionar funcionalidades específicas da página
 function initPageSpecificFeatures() {
-  const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+  // Múltiplas formas de detectar a página atual
+  let currentPage = window.location.pathname.split('/').pop() || 'index.html';
+  
+  // Se estiver vazio ou for apenas '/', verificar o href completo
+  if (!currentPage || currentPage === '') {
+    currentPage = window.location.href.split('/').pop() || 'index.html';
+  }
+  
+  // Remover query strings e hash
+  currentPage = currentPage.split('?')[0].split('#')[0];
+  
+  // Verificar também pelo título da página como fallback
+  const pageTitle = document.title.toLowerCase();
+  if (pageTitle.includes('contato') && !currentPage.includes('contato')) {
+    currentPage = 'contato.html';
+  }
+  
+  console.log('📄 Página detectada:', currentPage);
+  console.log('📍 Pathname completo:', window.location.pathname);
+  console.log('🔗 URL completa:', window.location.href);
 
   switch (currentPage) {
     case 'index.html':
+    case '':
       initHomePage();
       break;
     case 'sobre.html':
@@ -283,6 +303,13 @@ function initPageSpecificFeatures() {
     case 'contato.html':
       initContactPage();
       break;
+    default:
+      // Se não detectar, verificar se existe formulário de contato na página
+      const contatoForm = document.getElementById('contato-form');
+      if (contatoForm) {
+        console.log('✅ Formulário de contato encontrado, inicializando...');
+        initContactPage();
+      }
   }
 }
 
@@ -319,44 +346,81 @@ function initAboutPage() {
 function initContactPage() {
   console.log('📞 Inicializando página contato...');
 
-  // Adicionar validação e handlers para formulários
-  const forms = document.querySelectorAll('form');
-  console.log('Formulários encontrados:', forms.length);
-  
-  if (forms.length === 0) {
-    console.warn('Nenhum formulário encontrado. Tentando novamente...');
-    // Tentar novamente após um delay caso o includes.js ainda não tenha carregado
-    setTimeout(() => {
-      const formsRetry = document.querySelectorAll('form');
-      formsRetry.forEach(form => {
-        console.log('Adicionando listener ao formulário:', form.id || form.className);
-        form.addEventListener('submit', handleFormSubmit);
-        
-        const inputs = form.querySelectorAll('input, textarea');
-        inputs.forEach(input => {
-          input.addEventListener('blur', validateField);
-        });
-      });
-    }, 500);
-  }
-  
-  forms.forEach(form => {
-    console.log('Adicionando listener ao formulário:', form.id || form.className);
+  // Função para adicionar listeners ao formulário
+  function attachFormListeners(form) {
+    if (!form) return;
+    
+    // Verificar se já tem listener para evitar duplicação
+    if (form.dataset.listenerAttached === 'true') {
+      console.log('⚠️ Listeners já foram adicionados a este formulário');
+      return;
+    }
+    
+    console.log('🔗 Adicionando listener ao formulário:', form.id || form.className || 'sem ID/classe');
+    
+    // Adicionar listener de submit
     form.addEventListener('submit', handleFormSubmit);
+    form.dataset.listenerAttached = 'true';
+    console.log('✅ Listener de submit adicionado');
 
     // Adicionar validação em tempo real
     const inputs = form.querySelectorAll('input, textarea');
     inputs.forEach(input => {
-      input.addEventListener('blur', validateField);
+      // Verificar se já tem listener
+      if (!input.dataset.listenerAttached) {
+        input.addEventListener('blur', validateField);
+        input.dataset.listenerAttached = 'true';
+      }
     });
-  });
+    console.log(`✅ Listeners de validação adicionados a ${inputs.length} campos`);
+  }
+
+  // Tentar encontrar o formulário de contato
+  let contatoForm = document.getElementById('contato-form');
   
-  // Verificar se o formulário de contato existe
-  const contatoForm = document.getElementById('contato-form');
   if (contatoForm) {
-    console.log('✅ Formulário de contato encontrado');
+    console.log('✅ Formulário de contato encontrado pelo ID');
+    attachFormListeners(contatoForm);
   } else {
-    console.warn('⚠️ Formulário de contato não encontrado');
+    console.warn('⚠️ Formulário de contato não encontrado pelo ID, procurando por classe...');
+    // Tentar encontrar por classe
+    contatoForm = document.querySelector('.contato-form');
+    if (contatoForm) {
+      console.log('✅ Formulário encontrado pela classe');
+      attachFormListeners(contatoForm);
+    } else {
+      // Tentar encontrar qualquer formulário na página
+      const forms = document.querySelectorAll('form');
+      console.log(`📋 Total de formulários encontrados: ${forms.length}`);
+      
+      if (forms.length > 0) {
+        forms.forEach((form, index) => {
+          console.log(`Formulário ${index + 1}:`, {
+            id: form.id,
+            className: form.className,
+            action: form.action
+          });
+          attachFormListeners(form);
+        });
+      } else {
+        console.warn('⚠️ Nenhum formulário encontrado. Tentando novamente em 500ms...');
+        // Tentar novamente após um delay caso o includes.js ainda não tenha carregado
+        setTimeout(() => {
+          contatoForm = document.getElementById('contato-form') || document.querySelector('.contato-form');
+          if (contatoForm) {
+            console.log('✅ Formulário encontrado na segunda tentativa');
+            attachFormListeners(contatoForm);
+          } else {
+            const formsRetry = document.querySelectorAll('form');
+            if (formsRetry.length > 0) {
+              formsRetry.forEach(form => attachFormListeners(form));
+            } else {
+              console.error('❌ Formulário não encontrado após múltiplas tentativas');
+            }
+          }
+        }, 500);
+      }
+    }
   }
 }
 
@@ -440,6 +504,15 @@ document.addEventListener('DOMContentLoaded', () => {
     toggleMobileMenu();
     toggleSidebar(); // <-- Adiciona inicialização do sidebar
     initPageSpecificFeatures();
+
+    // Verificação final: se existe formulário de contato, garantir que está configurado
+    setTimeout(() => {
+      const contatoForm = document.getElementById('contato-form');
+      if (contatoForm && contatoForm.dataset.listenerAttached !== 'true') {
+        console.log('🔧 Verificação final: configurando formulário de contato...');
+        initContactPage();
+      }
+    }, 300);
 
     // Scroll suave para hash na URL após carregamento
     if (window.location.hash) {
